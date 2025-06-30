@@ -1,0 +1,35 @@
+# Fichiers de configuration
+.env
+
+# Fichiers de données
+*.csv
+last_published_index.txt
+
+# Fichiers de logs
+*.log
+
+# Fichiers temporaires
+*.tmp
+*.temp
+
+# Fichiers système
+.DS_Store
+Thumbs.db
+
+# Fichiers d'IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Fichiers de dépendances
+/vendor/
+/bundle/
+
+# Fichiers de build
+*.gem
+*.rbc
+chrome-linux64.zip
+chrome-linux64/
+*.deb
+chromedriver*

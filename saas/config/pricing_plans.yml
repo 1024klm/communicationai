@@ -1,0 +1,121 @@
+# Configuration des plans tarifaires du SaaS
+
+plans:
+  free:
+    name: "Free Trial"
+    code: "free"
+    tweets_per_month: 30
+    accounts_limit: 1
+    price_monthly: 0
+    price_yearly: 0
+    features:
+      - "30 tweets par mois"
+      - "1 compte Twitter"
+      - "Sources de base (5 comptes Twitter)"
+      - "Support par email"
+      - "Tableau de bord basique"
+    limitations:
+      api_calls_per_hour: 10
+      storage_days: 7
+
+  starter:
+    name: "Starter"
+    code: "starter"
+    tweets_per_month: 150
+    accounts_limit: 1
+    price_monthly: 29
+    price_yearly: 290  # 2 mois gratuits
+    features:
+      - "150 tweets par mois (~5/jour)"
+      - "1 compte Twitter"
+      - "10 sources personnalisées"
+      - "Programmation avancée"
+      - "Analytics de base"
+      - "Support prioritaire"
+      - "Webhooks"
+    limitations:
+      api_calls_per_hour: 60
+      storage_days: 30
+
+  professional:
+    name: "Professional"
+    code: "professional"
+    tweets_per_month: 600
+    accounts_limit: 3
+    price_monthly: 99
+    price_yearly: 990  # 2 mois gratuits
+    features:
+      - "600 tweets par mois (~20/jour)"
+      - "3 comptes Twitter"
+      - "Sources illimitées"
+      - "Personnalisation du ton"
+      - "Analytics avancés"
+      - "API access"
+      - "Support prioritaire 24/7"
+      - "Révision manuelle des tweets"
+      - "Intégration Slack"
+    limitations:
+      api_calls_per_hour: 200
+      storage_days: 90
+
+  business:
+    name: "Business"
+    code: "business"
+    tweets_per_month: 2000
+    accounts_limit: 10
+    price_monthly: 299
+    price_yearly: 2990  # 2 mois gratuits
+    features:
+      - "2000 tweets par mois"
+      - "10 comptes Twitter"
+      - "Sources illimitées"
+      - "Multi-utilisateurs (5 sièges)"
+      - "Personnalisation complète"
+      - "Analytics temps réel"
+      - "API sans limite"
+      - "Support dédié"
+      - "Formation personnalisée"
+      - "Modération IA avancée"
+      - "Intégrations custom"
+    limitations:
+      api_calls_per_hour: 1000
+      storage_days: 365
+
+  enterprise:
+    name: "Enterprise"
+    code: "enterprise"
+    tweets_per_month: -1  # Illimité
+    accounts_limit: -1    # Illimité
+    price_monthly: null   # Sur devis
+    price_yearly: null    # Sur devis
+    features:
+      - "Tweets illimités"
+      - "Comptes illimités"
+      - "Infrastructure dédiée"
+      - "SLA garanti 99.9%"
+      - "Account manager dédié"
+      - "Personnalisation complète"
+      - "Conformité RGPD avancée"
+      - "Déploiement on-premise possible"
+      - "API white-label"
+      - "Formation équipe"
+    limitations:
+      api_calls_per_hour: -1  # Illimité
+      storage_days: -1        # Illimité
+
+# Tarification à l'usage (pour dépassements)
+overage_pricing:
+  tweet_generation: 0.25  # $ par tweet supplémentaire
+  api_call: 0.001        # $ par appel API supplémentaire
+  storage_gb_month: 0.10 # $ par GB/mois de stockage
+
+# Réductions
+discounts:
+  yearly_discount: 0.1667  # ~17% (2 mois gratuits)
+  volume_discounts:
+    - min_tweets: 5000
+      discount: 0.10
+    - min_tweets: 10000
+      discount: 0.15
+    - min_tweets: 25000
+      discount: 0.20
