@@ -31,7 +31,6 @@ class ChatGPTBot < BaseBot
       scraped_content = read_scraped_data
       raise "Aucun contenu scraped trouvé" if scraped_content.strip.empty?
 
-<<<<<<< HEAD
       @rate_limiter.rate_limit_if_needed
       response = retry_with_backoff("Requête API OpenAI pour tweets") { make_api_request("Contenu à analyser:\n" + scraped_content, :generate_tweets, 0.8) }
       process_tweet_response(response)
@@ -66,13 +65,8 @@ class ChatGPTBot < BaseBot
   end
 
   def process_response(response)
-    unless response.success?
-      raise "Erreur API OpenAI: #{response.code} - #{response.message}"
-    end
-
-    content = response.dig("choices", 0, "message", "content")
-    raise "Réponse vide de l'API" if content.to_s.strip.empty?
-
+    validate_api_response(response)
+    content = extract_response_content(response)
     save_content(content)
     logger.info("Résumé généré et sauvegardé avec succès")
   end
@@ -86,38 +80,32 @@ class ChatGPTBot < BaseBot
     
     content = []
     CSV.foreach(TwitterBotConfig::FILES[:tweets_raw], headers: true) do |row|
-      content << "#{row['source']}: #{row['text']}"
+      content << "#{row['source']}: #{row['text']}" if row['text']&.strip
     end
     content.join("\n")
   rescue => e
     raise "Erreur lecture données scrapées: #{e.message}"
   end
 
-
   def process_tweet_response(response)
-    unless response.success?
-      raise "Erreur API OpenAI: #{response.code} - #{response.message}"
-    end
-
-    content = response.dig("choices", 0, "message", "content")
-    raise "Réponse vide de l'API" if content.to_s.strip.empty?
-
+    validate_api_response(response)
+    content = extract_response_content(response)
     save_content(content)
     logger.info("7 tweets générés et sauvegardés avec succès")
   end
 
+  def validate_api_response(response)
+    raise "Erreur API OpenAI: #{response.code} - #{response.message}" unless response.success?
+  end
+
+  def extract_response_content(response)
+    content = response.dig("choices", 0, "message", "content")
+    raise "Réponse vide de l'API" if content.to_s.strip.empty?
+    content
+  end
 end
 
 if __FILE__ == $PROGRAM_NAME
   bot = ChatGPTBot.new
   bot.generate_summary
 end
-=======
-N'oubliez pas de vous concentrer sur les informations les plus récentes et les plus impactantes pour la communauté crypto.\n\n#{ File.read("tweets.csv")}"
-res = HTTParty.post(
-  "https://api.openai.com/v1/chat/completions",
-  headers: { "Authorization" => "Bearer #{chatgpt_api_key}", "Content-Type" => "application/json" },
-  body: { model: "gpt-4o-mini", messages: [{ role: "user", content: prompt }], max_tokens: 2000 }.to_json
-)["choices"].first["message"]["content"]
-puts res
->>>>>>> 5c5dfac1cd9e16d54ed76970e6263e96b1e0e76f
